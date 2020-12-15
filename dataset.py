@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from PIL import Image
 
 
 class ADE20K_Dataset(nn.module):
@@ -14,3 +15,7 @@ class ADE20K_Dataset(nn.module):
 
 	def __len__(self):
 		return
+
+# 33882
+# tensor([0.5169, 0.4734, 0.4078])
+# tensor([0.2075, 0.2059, 0.1907])
