@@ -42,6 +42,24 @@ def copy_to_new(img_dict, destination):
 	"""
 	copy raw images to destination
 	"""
+	i = 0
 	for img_name in img_dict:
 		shutil.copy(img_dict[img_name][1], destination)
-		print("copying " + img_name)
+		i += 1
+		if i % 1000 == 999:
+			print("copied {} images".format(i * 1000))
+
+
+def put_back(img_dict, new_path):
+	"""
+	put images back to the dataset
+	"""
+	i = 0
+	for img in glob.glob(os.path.join(new_path, "*")):
+		# find original name by deleting style name
+		name = img.split("/")[-1].replace("_Hayao", "")
+		name = name.replace("_Shinkai", "")
+		shutil.copy(img, img_dict[name][0])
+		i += 1
+		if i % 1000 == 999:
+			print("copied {} images".format(i + 1))
