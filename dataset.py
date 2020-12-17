@@ -9,6 +9,10 @@ from torchvision import transforms
 from utils import *
 
 
+def round_nearest(x, p):
+    return ((x - 1) // p + 1) * p
+
+
 class ADE20K_Dataset(Dataset):
     """
     ADE20K dataset with anime style transfer
@@ -48,13 +52,12 @@ class ADE20K_Dataset(Dataset):
             img_name = img_name.replace(style, "")
         mask_path = self.masks_path[img_name]
         img = Image.open(img_path).convert("RGB")
-        mask = Image.open(mask_path)
+        mask = Image.open(mask_path).convert("L")
+        assert mask.mode == "L"
         # resize mask into the same dim with CartoonGAN outputs
         mask = mask.resize((224, 224), resample=Image.NEAREST)
         # convert mask img into labels
-        temp = Image.new("L", (224, 224), 0)
-        temp.paste(mask, (0, 0))
-        mask = torch.from_numpy(np.array(temp))
+        mask = torch.from_numpy(np.array(mask)).long()
         # apply transform
         if self.transform is None:
             self.transform = transforms.Compose([

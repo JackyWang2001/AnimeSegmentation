@@ -57,3 +57,4 @@ std /= num_img
 print(num_img)
 print(mean)
 print(std)
+# mean=[0.5169, 0.4734, 0.4078], std=[0.2075, 0.2059, 0.1907]
