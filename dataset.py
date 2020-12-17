@@ -21,6 +21,7 @@ class ADE20K_Dataset(Dataset):
         super(ADE20K_Dataset, self).__init__()
         self.root = root
         self.transform = transform
+        self.label_downsample_rate = 256 / 21
         if status == "Train":
             self.dir = os.path.join(self.root, "images", "training")
             self.styles = ("Hayao", "Hosoda")
@@ -53,11 +54,11 @@ class ADE20K_Dataset(Dataset):
         mask_path = self.masks_path[img_name]
         img = Image.open(img_path).convert("RGB")
         mask = Image.open(mask_path).convert("L")
-        assert mask.mode == "L"
         # resize mask into the same dim with CartoonGAN outputs
         mask = mask.resize((224, 224), resample=Image.NEAREST)
         # convert mask img into labels
-        mask = torch.from_numpy(np.array(mask)).long()
+        mask = np.array(mask) // self.label_downsample_rate
+        mask = torch.from_numpy(mask).int().long()
         # apply transform
         if self.transform is None:
             self.transform = transforms.Compose([

@@ -9,5 +9,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 train_dataset = ADE20K_Dataset(ROOT)
 train_loader = DataLoader(train_dataset, batch_size=32, num_workers=48, shuffle=True)
 
-exp = Experiment(151, train_loader, device)
+exp = Experiment(train_loader, device)
 exp.train(10)
+
+print("DONE")

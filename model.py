@@ -6,6 +6,6 @@ from torch.autograd import Variable
 
 
 def init_deeplab(num_classes=21):
-	return torchvision.models.segmentation.deeplabv3_resnet50(num_classes=num_classes)
+	return torchvision.models.segmentation.deeplabv3_resnet50(pretrained=True)
 
 
